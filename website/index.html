@@ -42,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">Binny the Trashbot</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -62,28 +62,29 @@
 
       <div class="starter-template">
         <h1>Binny the Trashbot</h1>
-        <p class="lead"><br>By Dyllan Hofflich (drh253) and Laurence Lai (ll758)</p>
+        <p class="lead">A Pi Powered Trash Can That Makes Garbage Fun!<br>By Dyllan Hofflich (drh253) and Laurence Lai (ll758)</p>
+        <img class="img-rounded" src="pics/binny.jpg" alt="Binny the Trashbot" width=90% height=90%>
       </div>
 
       <hr>
       <div class="center-block">
-          <iframe width="640" height="360" src="https://www.youtube.com/embed?v=et91Gea6CPk" frameborder="0" allowfullscreen></iframe>
           <h4 style="text-align:center;">Demonstration Video</h4>
+          <iframe width="640" height="360" src="https://www.youtube.com/embed?v=et91Gea6CPk" frameborder="0" allowfullscreen></iframe>
       </div>
 
       <hr id="intro">
 
       <div style="text-align:center;">
               <h2>Introduction</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <p style="text-align: left;padding: 0px 30px;">Do you hate how tedious throwing trash away is and how boring it feels? We have the solution for you! Binny is an automated interactive trash can that encourages a greener world by following humans around and enticing them to throw away garbage with its quirky and demanding personality. Packed with a robust computer vision algorithm and fun interfaces like speakers for its voice, bright LED lights, clap sound detection, and a Wifi connected webpage, Binny is sure to make trash throwing exciting again!</p>
+              <img class="img-rounded" src="pics/binny_angles.png" alt="Binny the Trashbot" width=90% height=90%>
+              <p style="text-align: left;padding: 0px 30px;">Using a Raspberry Pi 4, Binny uses a USB webcam to run a YOLO object detection model to identify and track human objects nearby. Once detected, the Pi takes in the center xy coordinates of a detected person and commands directions to Binny's motorized wheel base to move towards a person. Ultrasonic senors are utilized for object avoidance behavior to prevent Binny from running into obstacles. A PiTFT screen is utilized to provide a real time monitor of Binny's object detection model as well as measured ultrasonic distances. Additionally, a sound sensor detects loud claps and triggers Binny to spin around and look for a person when idle. Bluetooth speaker connectivity is also provided to give life to Binny and provide him with a voice to interact with users and give updates on his tracking algorithm. Binny also hosts a webpage on its Wifi hotspot to toggle between manual and automated trash can control. Lastly, LEDs were included because they look cool and provide a sick startup animation!
+              </p>
       </div>
 
     <hr id='obj'>
 
       <div class="row">
-          <div class="col-md-4" style="text-align:center;">
-          <img class="img-rounded" src="pics/1.jpg" alt="Generic placeholder image" width="240" height="240">
-          </div>
           <div class="col-md-8" style="font-size:18px;">
           <h2>Project Objective:</h2>
           <ul>
