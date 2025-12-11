@@ -49,8 +49,8 @@
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#intro">Introduction</a></li>
             <li><a href="#obj">Project Objective</a></li>
-            <li><a href="#design">Design</a></li>
             <li><a href="#drawings">Drawings</a></li>
+            <li><a href="#design">Design</a></li>
             <li><a href="#testing">Testing</a></li>
             <li><a href="#result">Result</a></li>
           </ul>
@@ -86,27 +86,75 @@
 
       <div class="row">
           <div class="col-md-8" style="font-size:18px;">
-          <h2>Project Objective:</h2>
+          <h2>Project Objectives</h2>
           <ul>
-              <li>some important objectives.some important objectives.some important objectives.some important objectives.</li>
-                <li>some other important objectives.</li>
-            <li>some not-that-important objectives.</li>
-          </ul>
+              <li>Develop a motorized base for a small trash can as well as a motor control interface.</li>
+              <li>Use comptuer vision on the Pi to track and follow people based on xy coordinates.</li>
+              <li>Uitlize ultrasoic sensors for obstacle avoidance behavior.</li>
+              <li>Provide fun user interactivity features such as speakers, lights, and clap sound detection.</li>
+              </ul>
           </div>
-      </div>
-
-    <hr id='design'>
-
-      <div style="text-align:center;">
-              <h2>Design</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
       </div>
 
     <hr id='drawings'>
 
       <div style="text-align:center;">
               <h2>Drawings</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <img class="img-round" src="pics/init_drawing.png" alt="Initial Propsosal" width=100%>
+              <p style="text-align: left;padding: 0px 30px;">The image above showcases the first rudimentary mockup design of Binny. Trashbot was initally proposed to follow and catch trash thrown in the air in real time so it would always land in the bin. However, after initial software testing and disucssion with Dr. Ma and our TAs, the hardware limitations of the Pi make it extremely complex to have real time trajectory prediction and movement to catch flying trash in the air. Even after overclocking and lowering the complexity of our YOLO algorithm, the average FPS of our model stayed around 7. Note that in our initial drawings, we did not include additional features like ultrasonic sensors, lights, and clap sensors. These additions were formed throughout the development process in desire for a more interactive and fun project.</p>
+      </div>
+    
+    <hr id='design'>
+
+      <div style="text-align:center;">
+            <h2>Design</h2>
+              <h3>Mechanical Hardware</h3>
+              <div style="display: flex; gap: 10px;">
+                  <img class="img-round" src="pics/cad1.png" alt="Initial Proposal" style="width: 33%;">
+                  <img class="img-round" src="pics/cad2.png" alt="Initial Proposal" style="width: 33%;">
+                  <img class="img-round" src="pics/cad3.png" alt="Initial Proposal" style="width: 33%;">
+              </div>
+              <p style="text-align: left;padding: 0px 30px;">The images above show the Fusion 360 CAD mechanical model that we 3D printed for our project. Our goal for this design was to extend the bottom of an already existing trash can and neatly enclose all eletrical components. Notice that in our design, we kept motor mounts separate from the actual bin assembly to make printing easier and to allow for more rapid prototyping changes in case our motor mounts were incorrect (which happened many times). The extended bin base provides enough space to enclose a Pi 4, motor drivers, a long breadboard, and other tiny sensors such as the big sound sensor. A retangular hole is cut out in order to provide mounting for the PiTFT screen. The trash can is friction fit into the top of the extended base rim. A wide hole in the back provides open access to ports on the Pi and connections to battery chargers and the USB webcam mounted on top of the trashcan. Holes used in the design are made to fit M3 screws and nuts. Our final print was made out of PLA due to its low cost and faster printing time, as well as slightly more flexibility over more rigid materials like PETG.</p>
+              
+              <div style="display: flex; gap: 10px;">
+                  <img class="img-round" src="pics/old_motor_mounts.png" alt="Initial Proposal" style="width: 30%;">
+                  <img class="img-round" src="pics/new_motor_mounts.png" alt="Initial Proposal" style="width: 70%;">
+              </div>
+
+              <p style="text-align: left;padding: 0px 30px;"> One major mechanical issue we encountered in mechanical assembly were our motor mount designs. Initialy, our robot utilized larger RS550 12V DC motors but we eventually replaced our motors to use our Lab 3 DC gearbox motors. Since our motor mounts were a separate component from the extended bottom base, it was fairly simple to swap out these mounts. The images above showcase our motor swap, with the old RS550 design on the left and Lab 3 motor design on the right.</p>
+              
+              
+
+              <h3>Electrical Hardware</h3>
+              <img class="img-round" src="pics/circuit_image.png" alt="Initial Propsosal" width=100%>
+              Binny contains a wide variety of electrical components, each with their own functionality. The breadboard diagram 
+
+              <h3>Software</h3>
+              <li>Computer Vision: (overclocking and overvoltage, shrinking model, detection scheme, camera)</li>
+              <li>motor control</li>
+              <li>ultrasonic sensing</li>
+              <li>clap detection</li>
+              <li>LEDs</li>
+              <li>website and hotspot</li>
+              <li>speaker voice</li>
+              <li>PiTFT display</li>
+
+              <h4>Computer Vision</h4>
+              
+              <p style="text-align: left;padding: 0px 30px;">
+              To enable Binny to follow humans around, we implemented a computer vision algorithm using the YOLO (You Only Look Once) object detection model. 
+              We chose YOLO for its speed and accuracy, 
+              making it suitable for real-time applications on the Raspberry Pi, and because initially, we were aiming to detect a variety of objects as they flew in the air in real-time, however, this. We used a pre-trained YOLOv11n model. The model was optimized to run efficiently on the 
+              Raspberry Pi by reducing its size and complexity, allowing Binny to process video frames at a reasonable frame rate. The camera captures video frames, which are then processed by the 
+              YOLO model to detect humans. The model outputs bounding boxes around detected humans along with their confidence scores. We extract 
+              the center coordinates of the bounding boxes 
+              to determine the position of the person relative to Binny. These coordinates are then used to calculate the direction and speed at which 
+              Binny should move to follow the detected person.
+              </p>
+              
+
+            
+              <!-- <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p> -->
       </div>
 
     <hr id='testing'>
