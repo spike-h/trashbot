@@ -140,6 +140,7 @@ def sound_detected_callback(channel):
         current_time = time.strftime("%H:%M:%S")
         print(f"\n--- {current_time} --- ?? Sound Detected!")
         speak('where are you trash')
+        change_lights('theater', '0,0,255')
         # Spin right slowly
         move_robot(50, -50) 
         time.sleep(0.4) # Spin for half a second
@@ -167,6 +168,33 @@ GPIO.add_event_detect(
 # ====================================
 #     END SOUND DETECTION SETUP
 # ===================================
+
+timeoutLED = 5
+ledStart = -10
+
+def change_lights(mode='off', color="255,255,255"):
+    """
+    Calls the light_test.py script with sudo privileges.
+    mode: 'wipe', 'rainbow', 'theater', 'off'
+    color: string 'R,G,B'
+    """
+    try:
+        # We use 'sudo' to elevate permissions just for this script
+        # We use '-c' (clear) only if we want lights off at the end, 
+        # otherwise we leave it out so the lights stay on the last color.
+        
+        cmd = ["sudo", "-E", "python3", "light_test.py", "--mode", mode, "--color", color]
+        
+        # subprocess.Popen allows the script to run without blocking your app completely,
+        # or use subprocess.run() if you want to wait for the animation to finish.
+        global ledStart
+        if time.time() - ledStart > 5:
+            subprocess.run(cmd)
+            ledStart = time.time()
+        
+    except Exception as e:
+        print(f"Error controlling lights: {e}")
+
 
 # ====================================
 #      ULTRASONIC THREAD
@@ -312,6 +340,7 @@ def autonomous_loop():
                     stop_robot()
                     print(f'Close enough to {class_name}, stopping.')
                     speak('got it!')
+                    change_lights('wipe', "255,0,0")
                     time.sleep(2)
                     # close_frames = 0
                     smoothed_height = 0.0
@@ -360,6 +389,7 @@ def autonomous_loop():
                     move_robot(left_speed, right_speed)
                     print(f'Tracking {class_name}. Speeds L:{left_speed:.1f}, R:{right_speed:.1f}')
                     speak('wait up')
+                    change_lights('theater', '0,255,0')
                     movement_executed = True # Mark that we followed a person
                 
                 break # Only track the first person found
@@ -469,8 +499,10 @@ def toggle_mode():
     
     if current_mode == 'AUTONOMOUS':
         speak("Autonomous Mode")
+        change_lights('wipe', "255,255,255")
     else:
         speak("Joystick Mode")
+        change_lights('rainbow')
         
     print(f"Mode switched to: {current_mode}")
     return jsonify({"status": "success", "mode": current_mode})
@@ -513,4 +545,5 @@ if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000, debug=False)
     finally:
         running = False
+        change_lights()
         GPIO.cleanup()
