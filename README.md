@@ -2,7 +2,8 @@
 Trashbot, AKA Binny, is a trashcan that can either be remotely controlled or autonomously follow you around. Equipped with a speaker, microphone, camera, LEDs, and a locally hosted network, this piece of garbage is made to help you out.
 
 File Structure:
-    Demo Version:
+
+    **Demo Version:**
     
     -----> run_demo.sh
             - bash script to run the LED and movement code at once. This script is run via ./run_demo.sh
