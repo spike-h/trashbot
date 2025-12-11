@@ -134,7 +134,8 @@ def sound_detected_callback(channel):
     """
     # Note: We can add a debounce here to prevent multiple triggers from a single clap.
     global interuptEnable
-    #print('i heard you')
+    print('i heard you')
+    print(interuptEnable)
     if interuptEnable:
         current_time = time.strftime("%H:%M:%S")
         print(f"\n--- {current_time} --- ?? Sound Detected!")
@@ -224,7 +225,7 @@ def autonomous_loop():
     close_frames = 0
     FRAME_REQUIRE_CLOSE = 4
     prevCount = 0
-    global avg_frame_rate
+    global avg_frame_rate, interuptEnable
 
     # --- OPTIMIZATION 1: Open the screen file ONCE ---
     fb_file = None
@@ -320,9 +321,17 @@ def autonomous_loop():
                     
                 else:
                     maxTurnDuty = 5
-                    speed_x = offset_x/frame_center_x * maxTurnDuty # set x speed to the percentage of offset
                     print(f'offset_x: {offset_x}')
-                    if abs(offset_x) < 20:
+                    if offset_x < 0:
+                        signX= -1
+                    else: 
+                        signX = 1
+                    tolerance = 40
+
+                    speed_x = (offset_x-signX*tolerance)/frame_center_x * maxTurnDuty # set x speed to the percentage of offset
+
+
+                    if abs(offset_x) < tolerance:
                         speed_x=0
                     speed_x = -1 * max(min(speed_x, maxTurnDuty), -maxTurnDuty)  # Clamp speed
                     
@@ -483,8 +492,8 @@ def joystick_data():
     right = speed - turn
     
     # Clamp
-    left = max(min(left, 100), -100)
-    right = max(min(right, 100), -100)
+    left = max(min(left, 80), -80)
+    right = max(min(right, 80), -80)
 
     move_robot(left, right)
     return jsonify({"status": "success", "l": left, "r": right})
