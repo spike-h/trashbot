@@ -29,6 +29,11 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+    img {
+    padding: 20px; /* Adds 20px space on all sides */
+    }
+    </style>
   </head>
 
   <body>
@@ -127,9 +132,9 @@
 
               <h3>Electrical Hardware</h3>
               <img class="img-round" src="pics/circuit_image.png" alt="Initial Propsosal" width=100%>
-              <img class="img-round" src="pics/IMG_2719.jpg" alt="Initial Propsosal" width=50%>
+              <div>
               <p style="text-align: left;padding: 0px 30px;">
-              Binny contains a variety of electrical components with various uses. The breadboard diagram above show the connections between the Raspberry Pi 4 and all electrical components used in the project. The image below showcases the physical implementation of all electrical components in our 3D printed bin enclousre. Binny contains the following major electrical components:
+              Binny contains a variety of electrical components with various uses. The breadboard diagram above shows the connections between the Raspberry Pi 4 and all electrical components used in the project. The image below the list showcases the physical implementation of all electrical components in our 3D printed bin enclousre. Binny contains the following major electrical components:
               <ul style="text-align: left;padding: 0px 30px;">
                 <li>1 <b>Raspberry Pi 4</b> to control the entire system</li>
                 <li>1 <b>solderless breadboard</b> to interconnect all components</li>
@@ -144,12 +149,21 @@
                 <li>1 USB-C <b>portable battery</b> to power the Pi</li>
               </ul>
               </p>
+              <img class="img-round" src="pics/IMG_2719.jpg" alt="Initial Propsosal" width=50%>
+              </div>
+              <br>
 
               <u style="text-align: left;padding: 0px 30px;">PiTFT Screen</u>
-              <p style="text-align: left;padding: 0px 30px;"></p>
+              <div>
+              <img src="pics/girlypopscreen.png" alt="PiTFT screen" width=40%>
+              <p style="text-align: left;padding: 0px 30px;">Binny uses the Adafruit PiTFT Plus, a 2.8-inch 320×240 resistive touchscreen display that connects directly to the Raspberry Pi’s GPIO header. The screen communicates over SPI, providing fast refresh rates suitable for UI elements, real-time debugging, and status monitoring. The compact size makes it ideal for embedding directly on the robot without adding bulk. The PiTFT allows us to view sensor outputs, run basic touch interfaces, and interact with the system without needing an external monitor, making on-device testing significantly more convenient during development.</p>
+              </div>
 
               <u style="text-align: left;padding: 0px 30px;">Logitech USB Webcam</u>
-              <p style="text-align: left;padding: 0px 30px;"></p>
+              <div>
+              <img src="pics/hd1080pllogitecusbwebcam.png" alt="Logitech USB Webcam" width=30%></img>
+              <p style="text-align: left;padding: 0px 30px;">The Logitech C920 USB webcam serves as Binny’s main vision sensor. It was chosen for its wide-angle lens, high-quality 1080p video output, and strong performance in low-light environments—significantly better than the Raspberry Pi Camera Module in our testing. The C920 connects through USB and is fully supported by OpenCV, making it easy to integrate into future computer-vision features such as object detection, gesture recognition, or navigation assistance. Its plug-and-play reliability and superior optics make it an ideal choice for a mobile robot that may encounter different lighting conditions.</p>
+              </div>
 
               <u style="text-align: left;padding: 0px 30px;">DC Gearbox Motors</u>
               <div>
@@ -177,15 +191,18 @@
 
               <u style="text-align: left;padding: 0px 30px;">Big Sound Sensor</u>
               <div>
-              
+              <img src="pics/big-sound.png" alt="Big Sound Sensor" width=30%></img>
               <p style="text-align: left;padding: 0px 30px;">
-
+                The big sound sensor operates at 3.3V and is used primarily for clap-based activation or attention cues. It includes a built-in microphone and comparator circuit that outputs a digital HIGH signal when ambient sound crosses a defined threshold. This makes it well-suited for detecting sharp noises, such as claps, taps, or loud commands. The sensor interfaces cleanly with the Raspberry Pi's 3.3V GPIO pins without the need for additional level shifting.
               </p>
               </div>
 
               <u style="text-align: left;padding: 0px 30px;">LED Strip</u>
               <div>
-              <p style="text-align: left;padding: 0px 30px;"></p>
+              <img src="pics/ledstrip.png" alt="LED Strip" width=30%></img>
+              <p style="text-align: left;padding: 0px 30px;">
+                A 5V WS2812 individually-addressable RGB LED strip is mounted around Binny to provide visual feedback and personality through lighting patterns. Each LED contains an internal IC that allows color and brightness to be controlled independently through a single-wire data protocol. The strip is powered by the motor driver's built-in 5V regulator output on the L298N motor driver, ensuring stable voltage levels. The Raspberry Pi drives the data line to control animations, indicators, and status signals such as obstacle alerts, battery warnings, or expressive lighting patterns. This strip offers flexible color control while remaining power-efficient for mobile operation.
+              </p>
               </div>
 
               <u style="text-align: left;padding: 0px 30px;">Power</u>
@@ -263,17 +280,8 @@
               </div>
 
               <h3>Software</h3>
-              <li> FLOW CHART OF CONTROL SCHEME === joystick mode ==== auto +> wait up, got it, backing up, where are you trash, just stopped</li>
-              <li>Computer Vision: (overclocking and overvoltage, shrinking model, detection scheme, camera) -- CHECK</li>
-              <li>PiTFT display - CHECK</li>
-              <li>motor control - CHECK </li>
-              <li>ultrasonic sensing - CHECK</li>
-              <li>clap detection - CHECK</li>
-              <li>LEDs</li>
-              <li>website and hotspot</li>
-              <li>speaker voice</li>
 
-              <img class="img-round" src="pics/software_architecture.png" alt="Software Architecture" width=70%>
+              <img class="img-round" src="pics/trashbot_software.png" alt="Software Architecture" width=70%>
 
               <p style="text-align: left;padding: 0px 30px;">
               Binny has a variety of softaware components that work together to provide an enjoyable experience to throwing out trash. A rough diagram of our software architecture is shown above. A more detailed description of each software component is provided below.
@@ -316,7 +324,7 @@
 
               <h4>Ultrasonic Sensors</h4>
               <p style="text-align: left;padding: 0px 30px;">
-              Ultrasonic sensors are used for obstacle detection and avoidance. We use two ultrasonic sensors mounted on the front of Binny to measure distances to nearby objects. The sensors work by sending out a high-frequency sound pulse and measuring the time it takes for the echo to return. This time is then converted into a distance measurement. The pigpio library is used to generate the trigger pulse and measure the echo pulse duration using GPIO pins. If an object is detected within a certain distance of 10cm, Binny will stop moving forward to avoid collisions. The threshold of 10cm was decided after extensive tests and hard hits to the LCD screen. This safety feature ensures that Binny can navigate its environment without running into obstacles, and also serves as a way for someone to signal Binny to back up if it gets too close.
+              Ultrasonic sensors are used for obstacle detection and avoidance. We use two ultrasonic sensors mounted on the front of Binny to measure distances to nearby objects. The sensors work by sending out a high-frequency sound pulse and measuring the time it takes for the echo to return. This time is then converted into a distance measurement. The pigpio library is used to generate the trigger pulse and measure the echo pulse duration using GPIO pins. If an object is detected within a certain distance of 10cm, Binny will stop moving forward to avoid collisions. The threshold of 10cm was decided after extensive tests and hard hits to the LCD screen (hence the bubble wrap). This safety feature ensures that Binny can navigate its environment without running into obstacles, and also serves as a way for someone to signal Binny to back up if it gets too close.
               We have the ultrasonic sensors constantly measuring distances in a separate thread, updating global distance variables that the main control loop can access. This allows for real-time obstacle detection without blocking the rest of the program from running.
             </p>
 
@@ -327,7 +335,7 @@
               </p>
 
               <h4>LEDs</h4>
-              <img class="img-round" src="pics/leds.jpg" alt="LEDs" width=45%>
+              <img class="img-round" src="pics/leds.png" alt="LEDs" width=45%>
               <p style="text-align: left;padding: 0px 30px;">
               The LEDs are used to provide visual feedback and enhance the user experience. We use a NeoPixel ring connected to the Raspberry Pi via a dedicated GPIO pin. The Adafruit NeoPixel library is used to control the LEDs, allowing us to set colors and animations. At startup, Binny performs a colorful LED animation to indicate that it is powering on. During operation, the LEDs can change colors based on Binny's state, such as: wiping a red across the strip if it is within range of a person to signify stopping, flashing a blue light when it hears a clap to turn, flashing a green light when it chases someone, wiping white across the strip when we transition from joystick to autonomous mode, and having a rainbow gradient fade on the strip when we are controlling the robot using a joystick. 
               The LED effects are managed in a separate python process from the main app since the NeoPixel library needs to be run as root, which the rest of the program was not configured to do (we ran into permission issues when running the ultrasonic code as root). Communication between the main app and the LED process is done via a simple command line protocol using the subprocess library. We can run a command such as "sudo -E python light_test.py --mode wipe --color 0,255,0" from our main Python program to spawn a process that is run as root to handle the LEDs. This allows us to change LED effects in real-time based on Binny's state without stopping the main program flow.
@@ -343,14 +351,13 @@
               The main draw of this is that it allows you to control Binny using just your phone from anywhere within WiFi range, making it very convenient to use. It also allows you to control Binny manually if the can is stuck somewhere, not following you properly, or is just fairly far away.
               </p>
               <grid>
-              <img class="img-round" src="pics/test.webp" alt="Website" width=45%>
+              <img class="img-round" src="pics/joystickModeWebsite.png" alt="Website" width=45%>
               <img class="img-round" src="pics/autoModeWebsite.png" alt="Website" width=45%>
               </grid>
 
               <h4>Speaker Voice</h4>
               <p style="text-align: left;padding: 0px 30px;"></p>
-              [AUTO CONNECTINO TO BLUETOOTH SPEAKER ON STARTUP]
-              
+              Binny automatically connects to a bluetooth speaker upon startup and on run of our demo Python file through a custom bash script named <b>autopair</b>. Using Linux command bluetoothctl, we first initially pair and trust the connected bluetooth speaker by searching for its MAC address using the scan function of bluetoothctl. Once the bluetooth speaker has been trusted, a bash script which starts bluetoothctl and connects to the identified MAC address is configured to run at boot and at the start of our demo Python file. Note that the bluetooth speaker must be on and in pairing mode beforehand. 
 
               We then use the bluetooth speaker to give audio feedback to the user using the espeak text-to-speech command line tool. 
               Binny uses espeak to announce its current state, such as when it starts following a person (saying "wait up"), when it stops due to an obstacle (saying "ahhh too close"), when it reaches you (saying "got it"), when it spins due to a clap and looks for you (saying "where are you trash), or when it switches between manual and autonomous modes (saying "joystick/autonomous mode"). The espeak command is called from the main Python, letting the program continue to run with the espeak process in the background.
@@ -378,27 +385,31 @@
               <p>
                 In order to ensure the reliability and performance of Binny, we conducted a series of tests focusing on various aspects of the system. These tests included:
               </p>
-              1. Motor Functionality: We tested the motors individually to ensure they responded correctly to speed and direction commands. 
+              <p style="text-align: left;padding: 0px 30px;">
+              1. Motor Functionality: 
+              We tested the motors individually to ensure they responded correctly to speed and direction commands. 
               This involved running the motors via the Lab 3 rolling code to verify their operation before integrating them into Binny's control system.
               At first, we had 12V motors that were too weak to move the entire trash can, so we switched to stronger motors from Lab 3 that used a gearbox to provide more torque. We were worried that they would not be able to provide enough speed, but after testing, we found that they were sufficient for our needs, in fact sometimes they were too fast and flipped the can over, so we had to limit the speed in software.
               We were also worried that the motors would not be able to handle the weight of the trash can, and the higher voltage of 12V since they were only rated for 8V but after testing, we found that they were able to move the can without any issues.
               We also calibrated the motors to ensure straight-line movement, making each motor spin at the same duty cycle and seeing if it actually went straight. Whether it was because of slight differences in the motors, wheel alignment, or the weight distribution of the trash can, we found that one motor would often spin slightly faster than the other, causing Binny to veer off course. To fix this, we adjusted the PWM duty cycle of each motor until Binny could move in a straight line reliably.
               <br>
-              2. Computer Vision Accuracy: We evaluated the YOLO model's ability to detect and track humans in different lighting conditions and environments. This involved testing with multiple subjects at varying distances and angles.
+              2. Computer Vision Accuracy: 
+              While running our program, we saw that sometimes the model would detect irrelevant objects such as chairs and backpacks, which would cause Binny to get stuck or move erratically. To solve this, we set a confidence score threshold of 0.7 and only consider detections with a confidence score above this threshold as valid human detections. This significantly improved the reliability of Binny's tracking behavior. Additionally, we added a buffer of two frames where if no humans are detected for two consecutive frames, Binny will stop moving to prevent wandering off, but if only one frame has no detections, it will continue moving as normal. This helps to prevent false negatives from causing Binny to stop unnecessarily.
+              Additionally, we tested Binny's ability to follow a person by having someone walk in front of it at various speeds and distances. We observed Binny's responsiveness and adjusted the motor speed scaling factors to ensure that it could sort-of follow someone or go to a stationary person without overshooting. While this is not perfect, we found that Binny could generally move towards a stationary person, or follow a very slow moving person when they don't make sharp turns. The robot can't make sharp turns because its frame rate is 7FPS, and therefore update rate is only 0.14 seconds, which means that if the person makes a sharp turn, Binny will not be able to react in time and will overshoot. We tried to mitigate this by lowering the turning speed of the motors, allowing Binny to travel straight more easily without veering off course, but at the cost of slower turning response.
               <br>
-              3. Obstacle Avoidance: We tested the ultrasonic sensors' effectiveness in detecting obstacles and preventing collisions. This included placing objects at different distances and angles to ensure Binny could navigate around them.
+              3. Obstacle Avoidance: 
+              We tested the ultrasonic sensors' effectiveness in detecting obstacles and preventing collisions. This included avoiding tough objects such as chairs with a metal bar that juts out a foot off the ground, as well as other objects such as peoples feet, walls, and tables. The chair problem is why we had to double the amount of ultrasonic sensors, becuase when testing it would always ram its screen into the chairs because of either its legs or the metal bar. We found that having two ultrasonic sensors at different heights allowed Binny to better detect obstacles and avoid collisions. We found that 10cm is a good threshold distance to stop Binny from moving forward, as it allows enough time for Binny to react and stop before hitting an obstacle.
               <br>
-              4. Clap Detection: We assessed the sound sensor's sensitivity and responsiveness to claps. This involved testing in various noise environments to ensure reliable detection without false positives.
+              4. Clap Detection: We assessed the sound sensor's sensitivity and responsiveness to claps. This involved testing in various noise environments to ensure reliable detection without false positives, such as noisy labs with other students. We adjusted the potentiometer on the sound sensor module to tune its sensitivity, finding a balance that allowed for consistent clap detection while minimizing false triggers from ambient noise. During testing, we found that Binny could reliably detect claps from across the room (given it was a loud clap), allowing users to easily get its attention. We also tested the spin behavior upon clap detection, ensuring that Binny could effectively reorient itself without overshooting or getting disoriented. We opted for having a very small angle of about 10 degrees per clap to make sure it wouldn't overshoot.
               5. LED Functionality: We verified that the LED strip responded correctly to commands and displayed the intended colors and animations.
               <br>
               6. Website Control: We tested the website interface to ensure seamless switching between manual and autonomous modes, as well as joystick responsiveness.
-              7. Power Management: We monitored the power consumption of the system to ensure that the batteries could sustain operation for a reasonable duration.
-              8. Overall System Integration: We conducted end-to-end tests to evaluate the overall performance of Binny, ensuring that all components worked together harmoniously.
-
+              7. Power Management: We monitored the power consumption of the system to ensure that the batteries could sustain operation for a reasonable duration. During all of our testing, the battery packs lasted for multiple hours without needing a recharge.
+              8. Lag and Performance: We measured the overall system performance, including frame rates for computer vision processing and responsiveness of motor control. We identified and mitigated sources of lag, such as optimizing framebuffer access for the PiTFT display and managing LED and espeak control processes to prevent conflicts. We found that when the ultrasonic sensor was going off constantly, it would slow down the entire system due to each close detection causing a speak process, and the ultrasonic thread ran at a very high frequency, leading to hundreds of espeak processes being spawned. To solve this, we limited the frequency of espeak calls to start another process if the last one has finished, leading to a significant performance increase.
+              </p>
               
 
 
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
       </div>
 
     <hr id='result'>

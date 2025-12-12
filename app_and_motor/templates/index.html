@@ -1,123 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Robot Control</title>
-    <script src="{{ url_for('static', filename='nipplejs.min.js') }}"></script>
-    <style>
-        body { font-family: sans-serif; text-align: center; background: #222; color: white; touch-action: none; margin: 0; padding: 20px;}
-        h1 { margin-bottom: 10px; }
-        #zone_joystick { position: relative; width: 100%; height: 350px; background: #333; margin-top: 20px; border-radius: 10px;}
-        
-        .btn { 
-            padding: 20px 40px; 
-            font-size: 22px; 
-            margin: 10px; 
-            cursor: pointer; 
-            border-radius: 10px; 
-            border: none; 
-            font-weight: bold;
-            width: 90%;
-            max-width: 400px;
-        }
-        
-        .mode-joy { background-color: #2ecc71; color: white; }
-        .mode-auto { background-color: #e74c3c; color: white; }
-        
-        #auto-indicator {
-            display: none;
-            margin-top: 50px;
-            font-size: 24px;
-            color: #f1c40f;
-            animation: blink 1s infinite;
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no"
+		/>
+		<title>Robot Control</title>
+		<script src="{{ url_for('static', filename='nipplejs.min.js') }}"></script>
+		<style>
+			body {
+				font-family: sans-serif;
+				text-align: center;
+				background: #222;
+				color: white;
+				touch-action: none;
+				margin: 0;
+				padding: 20px;
+			}
+			h1 {
+				margin-bottom: 10px;
+			}
+			#zone_joystick {
+				position: relative;
+				width: 100%;
+				height: 350px;
+				background: #333;
+				margin-top: 20px;
+				border-radius: 10px;
+			}
 
-        @keyframes blink { 50% { opacity: 0; } }
-    </style>
-</head>
-<body>
+			.btn {
+				padding: 20px 40px;
+				font-size: 22px;
+				margin: 10px;
+				cursor: pointer;
+				border-radius: 10px;
+				border: none;
+				font-weight: bold;
+				width: 90%;
+				max-width: 400px;
+			}
 
-    <h1>Robot Control</h1>
-    
-    <button id="modeBtn" class="btn mode-joy" onclick="toggleMode()">Enable Autonomous</button>
+			.mode-joy {
+				background-color: #2ecc71;
+				color: white;
+			}
+			.mode-auto {
+				background-color: #e74c3c;
+				color: white;
+			}
 
-    <div id="zone_joystick"></div>
+			#auto-indicator {
+				display: none;
+				margin-top: 50px;
+				font-size: 24px;
+				color: #f1c40f;
+				animation: blink 1s infinite;
+			}
 
-    <div id="auto-indicator">
-        🤖 AI AUTONOMOUS MODE ACTIVE <br>
-        <small>Scanning for Persons...</small>
-    </div>
+			@keyframes blink {
+				50% {
+					opacity: 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Robot Control</h1>
 
-    <script>
-        let currentMode = 'JOYSTICK';
-        
-        // --- JOYSTICK SETUP ---
-        var manager = nipplejs.create({
-            zone: document.getElementById('zone_joystick'),
-            mode: 'static',
-            position: {left: '50%', top: '50%'},
-            color: 'white'
-        });
+		<button id="modeBtn" class="btn mode-joy" onclick="toggleMode()">
+			Enable Autonomous
+		</button>
 
-        manager.on('move', function (evt, data) {
-            if (currentMode !== 'JOYSTICK') return;
-            
-            const force = Math.min(data.force, 2.0); 
-            const angle = data.angle.radian;
-            
-            // Convert polar to Cartesian
-            const x = Math.cos(angle) * (force / 2.0); 
-            const y = Math.sin(angle) * (force / 2.0);
-            
-            fetch('/joystick_data', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({x: x, y: y})
-            });
-        });
+		<div id="zone_joystick"></div>
 
-        manager.on('end', function () {
-            if (currentMode !== 'JOYSTICK') return;
-            fetch('/joystick_data', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({x: 0, y: 0})
-            });
-        });
+		<div id="auto-indicator">
+			AUTONOMOUS MODE ACTIVE <br />
+			<small>Scanning for Persons...</small>
+		</div>
 
-        // --- MODE TOGGLE ---
-        function toggleMode() {
-            const btn = document.getElementById('modeBtn');
-            const joyZone = document.getElementById('zone_joystick');
-            const autoInd = document.getElementById('auto-indicator');
+		<script>
+			let currentMode = "JOYSTICK";
 
-            if (currentMode === 'JOYSTICK') {
-                currentMode = 'AUTONOMOUS';
-                
-                // Update UI
-                btn.innerText = "Stop Autonomous (Switch to Joystick)";
-                btn.className = "btn mode-auto";
-                joyZone.style.display = 'none';
-                autoInd.style.display = 'block';
-                
-            } else {
-                currentMode = 'JOYSTICK';
-                
-                // Update UI
-                btn.innerText = "Enable Autonomous";
-                btn.className = "btn mode-joy";
-                joyZone.style.display = 'block';
-                autoInd.style.display = 'none';
-            }
+			// --- JOYSTICK SETUP ---
+			var manager = nipplejs.create({
+				zone: document.getElementById("zone_joystick"),
+				mode: "static",
+				position: { left: "50%", top: "50%" },
+				color: "white",
+			});
 
-            // Notify Server
-            fetch('/toggle_mode', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({mode: currentMode})
-            });
-        }
-    </script>
-</body>
+			manager.on("move", function (evt, data) {
+				if (currentMode !== "JOYSTICK") return;
+
+				const force = Math.min(data.force, 2.0);
+				const angle = data.angle.radian;
+
+				// Convert polar to Cartesian
+				const x = Math.cos(angle) * (force / 2.0);
+				const y = Math.sin(angle) * (force / 2.0);
+
+				fetch("/joystick_data", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ x: x, y: y }),
+				});
+			});
+
+			manager.on("end", function () {
+				if (currentMode !== "JOYSTICK") return;
+				fetch("/joystick_data", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ x: 0, y: 0 }),
+				});
+			});
+
+			// --- MODE TOGGLE ---
+			function toggleMode() {
+				const btn = document.getElementById("modeBtn");
+				const joyZone = document.getElementById("zone_joystick");
+				const autoInd = document.getElementById("auto-indicator");
+
+				if (currentMode === "JOYSTICK") {
+					currentMode = "AUTONOMOUS";
+
+					// Update UI
+					btn.innerText = "Stop Autonomous (Switch to Joystick)";
+					btn.className = "btn mode-auto";
+					joyZone.style.display = "none";
+					autoInd.style.display = "block";
+				} else {
+					currentMode = "JOYSTICK";
+
+					// Update UI
+					btn.innerText = "Enable Autonomous";
+					btn.className = "btn mode-joy";
+					joyZone.style.display = "block";
+					autoInd.style.display = "none";
+				}
+
+				// Notify Server
+				fetch("/toggle_mode", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ mode: currentMode }),
+				});
+			}
+		</script>
+	</body>
 </html>
