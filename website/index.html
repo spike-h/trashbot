@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Binny the Trashbot - Powered by Pi 4! </title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -122,13 +122,13 @@
               <p style="text-align: left;padding: 0px 30px;">The images above show the Fusion 360 CAD mechanical model that we 3D printed for our project. Our goal for this design was to extend the bottom of an already existing trash can and neatly enclose all eletrical components. Notice that in our design, we kept motor mounts separate from the actual bin assembly to make printing easier and to allow for more rapid prototyping changes in case our motor mounts were incorrect (which happened many times). The extended bin base provides enough space to enclose a Pi 4, motor drivers, a long breadboard, and other tiny sensors such as the big sound sensor. A retangular hole is cut out in order to provide mounting for the PiTFT screen. The trash can is friction fit into the top of the extended base rim. A wide hole in the back provides open access to ports on the Pi and connections to battery chargers and the USB webcam mounted on top of the trashcan. Holes used in the design are made to fit M3 screws and nuts. Our final print was made out of PLA due to its low cost and faster printing time, as well as slightly more flexibility over more rigid materials like PETG.</p>
               
               <div style="display: flex; gap: 10px;">
-                  <img class="img-round" src="pics/old_motor_mounts.png" alt="Initial Proposal" style="width: 50%;">
-                  <img class="img-round" src="pics/new_motor_mounts.png" alt="Initial Proposal" style="width: 50%;">
+                  <img class="img-round" src="pics/old_motor_mounts.png" alt="Initial Proposal"  style="width:50%; height:auto;">
+                  <img class="img-round" src="pics/new_motor_mounts.png" alt="Initial Proposal"  style="width:50%; height:20%;">
               </div>
 
-              <p style="text-align: left;padding: 0px 30px;"> One major mechanical issue we encountered in mechanical assembly were our motor mount designs. Initialy, our robot utilized larger RS550 12V DC motors but we eventually replaced our motors to use our Lab 3 DC gearbox motors. Since our motor mounts were a separate component from the extended bottom base, it was fairly simple to swap out these mounts. The images above showcase our motor swap, with the old RS550 design on the left and Lab 3 motor design on the right.</p>
+              <p style="text-align: left;padding: 0px 30px;"> One major mechanical issue we encountered in mechanical assembly were our motor mount designs. Initialy, our robot utilized larger RS550 12V DC motors but we eventually replaced our motors to use our Lab 3 DC gearbox motors. Since our motor mounts were a separate component from the extended bottom base, it was fairly simple to swap out these mounts. The images above showcase our motor swap, with the old RS550 design on the left and Lab 3 motor design on the right. The picture below showcases the assembled 3D printed extedned bottom base for Binny.</p>
               
-              
+              <img class="img-round" src="pics/3d-print.png" alt="Initial Propsosal" width=50%>
 
               <h3>Electrical Hardware</h3>
               <img class="img-round" src="pics/circuit_image.png" alt="Initial Propsosal" width=100%>
@@ -144,7 +144,7 @@
                 <li>1 <b>L298N DC motor drivers</b> for transferring low-voltage (3.3V) control signals to higher-voltage (12V) electrical outputs to the motors</li>
                 <li>2 <b>ultrasonic distance sensors</b> to measure distances and avoid obstacles</li>
                 <li>1 <b>big sound sensor</b> to sense for loud noises like claps</li>
-                <li>1 <b>5V adressable LED strip</b></li>
+                <li>1 <b>5V adressable LED strip</b> to signal statuses</li>
                 <li>1 <b>12V reachargable lithium ion</b> battery to power the motors and LED strip</li>
                 <li>1 USB-C <b>portable battery</b> to power the Pi</li>
               </ul>
@@ -156,13 +156,13 @@
               <u style="text-align: left;padding: 0px 30px;">PiTFT Screen</u>
               <div>
               <img src="pics/girlypopscreen.png" alt="PiTFT screen" width=40%>
-              <p style="text-align: left;padding: 0px 30px;">Binny uses the Adafruit PiTFT Plus, a 2.8-inch 320×240 resistive touchscreen display that connects directly to the Raspberry Pi’s GPIO header. The screen communicates over SPI, providing fast refresh rates suitable for UI elements, real-time debugging, and status monitoring. The compact size makes it ideal for embedding directly on the robot without adding bulk. The PiTFT allows us to view sensor outputs, run basic touch interfaces, and interact with the system without needing an external monitor, making on-device testing significantly more convenient during development.</p>
+              <p style="text-align: left;padding: 0px 30px;">Binny uses the Adafruit PiTFT Plus, a 2.8-inch 320x240 resistive touchscreen display that connects directly to the Raspberry Pi's GPIO header. The screen communicates over SPI, providing fast refresh rates suitable for UI elements, real-time debugging, and status monitoring. The compact size makes it ideal for embedding directly on the robot without adding bulk. The PiTFT allows us to view sensor outputs, run basic touch interfaces, and interact with the system without needing an external monitor, making on-device testing significantly more convenient during development.</p>
               </div>
 
               <u style="text-align: left;padding: 0px 30px;">Logitech USB Webcam</u>
               <div>
               <img src="pics/hd1080pllogitecusbwebcam.png" alt="Logitech USB Webcam" width=30%></img>
-              <p style="text-align: left;padding: 0px 30px;">The Logitech C920 USB webcam serves as Binny’s main vision sensor. It was chosen for its wide-angle lens, high-quality 1080p video output, and strong performance in low-light environments—significantly better than the Raspberry Pi Camera Module in our testing. The C920 connects through USB and is fully supported by OpenCV, making it easy to integrate into future computer-vision features such as object detection, gesture recognition, or navigation assistance. Its plug-and-play reliability and superior optics make it an ideal choice for a mobile robot that may encounter different lighting conditions.</p>
+              <p style="text-align: left;padding: 0px 30px;">The Logitech C920 USB webcam serves as Binny's main vision sensor. It was chosen for its wide-angle lens, high-quality 1080p video output, and strong performance in low-light environments—significantly better than the Raspberry Pi Camera Module in our testing. The C920 connects through USB and is fully supported by OpenCV, making it easy to integrate into future computer-vision features such as object detection, gesture recognition, or navigation assistance. Its plug-and-play reliability and superior optics make it an ideal choice for a mobile robot that may encounter different lighting conditions.</p>
               </div>
 
               <u style="text-align: left;padding: 0px 30px;">DC Gearbox Motors</u>
@@ -208,7 +208,7 @@
               <u style="text-align: left;padding: 0px 30px;">Power</u>
               <div>
               <p style="text-align: left;padding: 0px 30px;">
-              Binny consists of two power supplies - one 12V rechargable Li-ion battery and one portable battery providing USB power. The Li-ion battery provides 12V at around 3000 mAH of power at full charge. We chose to go with this battery as it was rechargable and met the power requirements for the motors used in this project. In addition to powering the motors, the motor driver used includes a built in 12V to 5V buck converter, which we use to power our 5V LED strip. Additionally, taking 5V from this battery prevents undervotlage power warnings on the Pi. This takes power load off the Raspberry Pi, allowing maximum power usage to go towards software processes rather than hardware requirements. The portable battery bank provides USB power to the Raspberry Pi. USB power is advantageous over a battery as it provides a regulated power source and prevents overvoltage or undervoltage of the Pi which could negatively harm processes. 
+              Binny consists of two power supplies - one 12V rechargable Li-ion battery and one portable battery providing USB power. The Li-ion battery provides 12V at around 1200 mAH of power at full charge. We chose to go with this battery as it was rechargable and met the power requirements for the motors used in this project. In addition to powering the motors, the motor driver used includes a built in 12V to 5V buck converter, which we use to power our 5V LED strip. Additionally, taking 5V from this battery prevents undervotlage power warnings on the Pi. This takes power load off the Raspberry Pi, allowing maximum power usage to go towards software processes rather than hardware requirements. The portable battery bank provides USB power to the Raspberry Pi. USB power is advantageous over a battery as it provides a regulated power source and prevents overvoltage or undervoltage of the Pi which could negatively harm processes. 
               </p>
               </div>
 
@@ -374,38 +374,32 @@
 
       <div style="text-align:center;">
               <h2>Testing</h2>
-              motor speed differences (not going straight),
-              motor wiring issues
-              motor driver issues
-              improving how to turn towards person
-              improving confidence score threshold
-              Pitft and espeak process laggings
-              led not cleaning up when finished
-
               <p>
                 In order to ensure the reliability and performance of Binny, we conducted a series of tests focusing on various aspects of the system. These tests included:
               </p>
               <p style="text-align: left;padding: 0px 30px;">
-              1. Motor Functionality: 
+              <b>1. Motor Functionality:</b>
               We tested the motors individually to ensure they responded correctly to speed and direction commands. 
               This involved running the motors via the Lab 3 rolling code to verify their operation before integrating them into Binny's control system.
               At first, we had 12V motors that were too weak to move the entire trash can, so we switched to stronger motors from Lab 3 that used a gearbox to provide more torque. We were worried that they would not be able to provide enough speed, but after testing, we found that they were sufficient for our needs, in fact sometimes they were too fast and flipped the can over, so we had to limit the speed in software.
               We were also worried that the motors would not be able to handle the weight of the trash can, and the higher voltage of 12V since they were only rated for 8V but after testing, we found that they were able to move the can without any issues.
               We also calibrated the motors to ensure straight-line movement, making each motor spin at the same duty cycle and seeing if it actually went straight. Whether it was because of slight differences in the motors, wheel alignment, or the weight distribution of the trash can, we found that one motor would often spin slightly faster than the other, causing Binny to veer off course. To fix this, we adjusted the PWM duty cycle of each motor until Binny could move in a straight line reliably.
               <br>
-              2. Computer Vision Accuracy: 
+              <b>2. Computer Vision Accuracy: </b>
               While running our program, we saw that sometimes the model would detect irrelevant objects such as chairs and backpacks, which would cause Binny to get stuck or move erratically. To solve this, we set a confidence score threshold of 0.7 and only consider detections with a confidence score above this threshold as valid human detections. This significantly improved the reliability of Binny's tracking behavior. Additionally, we added a buffer of two frames where if no humans are detected for two consecutive frames, Binny will stop moving to prevent wandering off, but if only one frame has no detections, it will continue moving as normal. This helps to prevent false negatives from causing Binny to stop unnecessarily.
               Additionally, we tested Binny's ability to follow a person by having someone walk in front of it at various speeds and distances. We observed Binny's responsiveness and adjusted the motor speed scaling factors to ensure that it could sort-of follow someone or go to a stationary person without overshooting. While this is not perfect, we found that Binny could generally move towards a stationary person, or follow a very slow moving person when they don't make sharp turns. The robot can't make sharp turns because its frame rate is 7FPS, and therefore update rate is only 0.14 seconds, which means that if the person makes a sharp turn, Binny will not be able to react in time and will overshoot. We tried to mitigate this by lowering the turning speed of the motors, allowing Binny to travel straight more easily without veering off course, but at the cost of slower turning response.
               <br>
-              3. Obstacle Avoidance: 
+              <b>3. Obstacle Avoidance: </b>
               We tested the ultrasonic sensors' effectiveness in detecting obstacles and preventing collisions. This included avoiding tough objects such as chairs with a metal bar that juts out a foot off the ground, as well as other objects such as peoples feet, walls, and tables. The chair problem is why we had to double the amount of ultrasonic sensors, becuase when testing it would always ram its screen into the chairs because of either its legs or the metal bar. We found that having two ultrasonic sensors at different heights allowed Binny to better detect obstacles and avoid collisions. We found that 10cm is a good threshold distance to stop Binny from moving forward, as it allows enough time for Binny to react and stop before hitting an obstacle.
               <br>
-              4. Clap Detection: We assessed the sound sensor's sensitivity and responsiveness to claps. This involved testing in various noise environments to ensure reliable detection without false positives, such as noisy labs with other students. We adjusted the potentiometer on the sound sensor module to tune its sensitivity, finding a balance that allowed for consistent clap detection while minimizing false triggers from ambient noise. We also saw that the motors would cause the sound sensor to go off. To solve this, we only looked for claps after 5 frames of no person detected so 5 frames after it stops moving. During testing, we found that Binny could reliably detect claps from across the room (given it was a loud clap), allowing users to easily get its attention. We also tested the spin behavior upon clap detection, ensuring that Binny could effectively reorient itself without overshooting or getting disoriented. We opted for having a very small angle of about 10 degrees per clap to make sure it wouldn't overshoot.
+              <b>4. Clap Detection: </b> We assessed the sound sensor's sensitivity and responsiveness to claps. This involved testing in various noise environments to ensure reliable detection without false positives, such as noisy labs with other students. We adjusted the potentiometer on the sound sensor module to tune its sensitivity, finding a balance that allowed for consistent clap detection while minimizing false triggers from ambient noise. We also saw that the motors would cause the sound sensor to go off. To solve this, we only looked for claps after 5 frames of no person detected so 5 frames after it stops moving. During testing, we found that Binny could reliably detect claps from across the room (given it was a loud clap), allowing users to easily get its attention. We also tested the spin behavior upon clap detection, ensuring that Binny could effectively reorient itself without overshooting or getting disoriented. We opted for having a very small angle of about 10 degrees per clap to make sure it wouldn't overshoot.
               5. LED Functionality: We verified that the LED strip responded correctly to commands and displayed the intended colors and animations.
               <br>
-              6. Website Control: We tested the website interface to ensure seamless switching between manual and autonomous modes, as well as joystick responsiveness.
-              7. Power Management: We monitored the power consumption of the system to ensure that the batteries could sustain operation for a reasonable duration. During all of our testing, the battery packs lasted for multiple hours without needing a recharge.
-              8. Lag and Performance: We measured the overall system performance, including frame rates for computer vision processing and responsiveness of motor control. We identified and mitigated sources of lag, such as optimizing framebuffer access for the PiTFT display and managing LED and espeak control processes to prevent conflicts. We found that when the ultrasonic sensor was going off constantly, it would slow down the entire system due to each close detection causing a speak process, and the ultrasonic thread ran at a very high frequency, leading to hundreds of espeak processes being spawned. To solve this, we limited the frequency of espeak calls to start another process if the last one has finished, leading to a significant performance increase.
+              <b>6. Website Control:</b> We tested the website interface to ensure seamless switching between manual and autonomous modes, as well as joystick responsiveness.
+              <br>
+              <b>7. Power Management:</b> We monitored the power consumption of the system to ensure that the batteries could sustain operation for a reasonable duration. During all of our testing, the battery packs lasted for multiple hours without needing a recharge.
+              <br>
+              <b>8. Lag and Performance:</b> We measured the overall system performance, including frame rates for computer vision processing and responsiveness of motor control. We identified and mitigated sources of lag, such as optimizing framebuffer access for the PiTFT display and managing LED and espeak control processes to prevent conflicts. We found that when the ultrasonic sensor was going off constantly, it would slow down the entire system due to each close detection causing a speak process, and the ultrasonic thread ran at a very high frequency, leading to hundreds of espeak processes being spawned. To solve this, we limited the frequency of espeak calls to start another process if the last one has finished, leading to a significant performance increase.
               </p>
               
 
@@ -415,8 +409,20 @@
     <hr id='result'>
 
       <div style="text-align:center;">
-              <h2>Result</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <h2>Results</h2>
+              <p style="text-align: left;padding: 0px 30px;">Binny the Trashbot performed reliably across its primary functional areas during final testing, successfully integrating computer vision, motor control, and various interactive sensors.</p>
+              <ul style="text-align: left;padding: 0px 30px;">
+                <li><b>Human Tracking and Following:</b> Binny successfully utilized the optimized YOLOv11n\_ncnn model to detect and track humans in real-time (achieving an average of <b>7 FPS</b>). The proportional controller allowed the robot to adjust its turning and forward motion based on the horizontal offset and bounding box size of the detected person. It could reliably move towards and follow a <b>stationary or slowly moving person</b> without overshooting.</li>
+                <li><b>Obstacle Avoidance:</b> The dual ultrasonic sensors effectively measured distances and successfully triggered the robot to <b>stop its forward motion</b> when an obstacle (including low-lying objects) was detected within the <b>10 cm threshold</b>, ensuring collision avoidance.</li>
+                <li><b>User Interactivity:</b>
+                  <ul>
+                    <li><b>Clap Detection:</b> The sound sensor reliably detected loud claps, correctly triggering Binny's <b>"spin and search"</b> routine to reorient and find a person.</li>
+                    <li><b>LED Feedback:</b> The addressable LED strip provided clear visual feedback, including a startup animation and status signals (e.g., <b>red for stopping</b> due to proximity, <b>blue for clap detection</b>, <b>green for following</b>).</li>
+                    <li><b>Audio Feedback:</b> Binny successfully connected to a Bluetooth speaker and used the <b>espeak</b> utility to provide <b>real-time audio announcements</b> about its status (e.g., "wait up," "ahhh too close," "joystick mode").</li>
+                  </ul>
+                </li>
+              </ul>
+              <p style="text-align: left;padding: 0px 30px;">The most significant obstacle on Binny's performance remains the processing speed of the Raspberry Pi 4, which, even when overcloked and running the optimized YOLO model, only achieves about 7 FPS for computer vision. This frame rate has an update latency of 0.14s which is sufficient for slow moving objects but struggles with fast movements or sharp turns. Additionally, mangaging concurrency of multiple processes requires careful throttling and has moments of sluggishness and lag when multiple events happen at the same time.</p>
       </div>
 
     <hr>
@@ -424,20 +430,20 @@
     <div class="row" style="text-align:center;">
           <h2>Work Distribution</h2>
           <div style="text-align:center;">
-              <img class="img-rounded" src="pics/group.jpg" alt="Generic placeholder image" style="width:80%;">
-              <h4>Project group picture</h4>
+              <img class="img-rounded" src="pics/proud_parents.jpg" alt="We love our baby" style="width:80%;">
+              <h4>Us and our baby Binny</h4>
           </div>
           <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/a.png" alt="Generic placeholder image" width="240" height="240">
-              <h3>Rick</h3>
-              <p class="lead">netid@cornell.edu</p>
-              <p>Designed the overall software architecture (Just being himself).
+              <img class="img-rounded" src="pics/spike.png" alt="Generic placeholder image" width="240" height="240">
+              <h3>Dyllan (Spike) Hofflich</h3> 
+              <p class="lead">drh253@cornell.edu</p>
+              <p>Developed majority of the software features including computer vision algorithm, PiTFT display output, motor control, clap detection, status LEDs, speaker voice, and hotspot website. 
           </div>
           <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/b.png" alt="Generic placeholder image" width="240" height="240">
-              <h3>Morty</h3>
-              <p class="lead">netid@cornell.edu</p>
-              <p>Tested the overall system.
+              <img class="img-rounded" src="pics/larry.png" alt="Generic placeholder image" width="240" height="240">
+              <h3>Laurence (Larry) Lai</h3>
+              <p class="lead">ll758@cornell.edu</p>
+              <p>Developed majority of the hardware features including CAD design, electrical components and wiring, as well as ultrasonic software and automated bluetooth speaker connectivity. 
           </div>
       </div>
 
@@ -445,35 +451,32 @@
       <div style="font-size:18px">
           <h2>Parts List</h2>
           <ul>
-              <li>Raspberry Pi $35.00</li>
-              <li>Raspberry Pi Camera V2 $25.00</li>
-              <a href="https://www.adafruit.com/product/1463"><li>NeoPixel Ring - $9.95</li></a>
-              <li>LEDs, Resistors and Wires - Provided in lab</li>
+              <li>Raspberry Pi 4 - $0 From Class</li>
+              <li>Solderless Breadboard - $0 From Class</li>
+              <li>PiTFT Screen- $0 From Class</li>
+              <li>Logietch C920 - $0 From Laurence</li>
+              <li>DC Motors - $0 From Class</li>
+              <li>L298N Motor Driver - $0 from Past Projects</li>
+              <li>Ultrasonic Distance Sensors -$0 from Past Projects</li>
+              <li>Big Sound Sensor - $0 from Past Projects</li>
+              <li>5V Addressable LED Strip - $0 from Past Projects</li>
+              <a href="https://www.amazon.com/UCTRONICS-Breadboard-Connection-Raspberry-Display/dp/B07D991KMR?crid=3SP6B519HSH3B&dib=eyJ2IjoiMSJ9.pS-mY4O5o2GqEac6bOFDVjBrMr5Ro4myj7qLgJ--ydcnQcNXHLZkrEuAXaHfr_YKOUgAzKUIPa-Ct1gz_1yb7smJUxOSPxfAK0ER22HOVTRXEWPi0pw9AuJ2Y3PEysWXqKI-T7RzVPDuMfl6AAf94HnMf9SRtDyMX_-YtCu3__FWTzzyDFAEj9pLpmOnzgDOJnZM63aiep1a6qn2Iyb8yI7PgoL4vEPb767miG7z-vA.m2c5HCV1U-9-h8w-sur4QmU5j7BU6YI4erdjcVgi7ow&dib_tag=se&keywords=40%2Bpin%2Bbreakout%2Bmale%2Bto%2Bfemale&qid=1765510545&sprefix=40%2Bpin%2Bbreakout%2Bmale%2Bto%2Bfema%2Caps%2C91&sr=8-3&th=1"><li>12V rechargable Li-ion Battery - $20 from Amazon</
+              <li>USB-C Portable Batery -$0 from Dyllan</li>
+              <a href="https://www.amazon.com/UCTRONICS-Breadboard-Connection-Raspberry-Display/dp/B07D991KMR?crid=3SP6B519HSH3B&dib=eyJ2IjoiMSJ9.pS-mY4O5o2GqEac6bOFDVjBrMr5Ro4myj7qLgJ--ydcnQcNXHLZkrEuAXaHfr_YKOUgAzKUIPa-Ct1gz_1yb7smJUxOSPxfAK0ER22HOVTRXEWPi0pw9AuJ2Y3PEysWXqKI-T7RzVPDuMfl6AAf94HnMf9SRtDyMX_-YtCu3__FWTzzyDFAEj9pLpmOnzgDOJnZM63aiep1a6qn2Iyb8yI7PgoL4vEPb767miG7z-vA.m2c5HCV1U-9-h8w-sur4QmU5j7BU6YI4erdjcVgi7ow&dib_tag=se&keywords=40%2Bpin%2Bbreakout%2Bmale%2Bto%2Bfemale&qid=1765510545&sprefix=40%2Bpin%2Bbreakout%2Bmale%2Bto%2Bfema%2Caps%2C91&sr=8-3&th=1"><li>40 Pin Breakout Cable - $8</li></a>
+              <li>JBL Flip 6 Bluetooth Speaker - $0 from Dyllan's Roommate</li>
+              <li>Resistors and Wires - $0 From Class</li>
           </ul>
-          <h3>Total: $69.95</h3>
+          <h3>Total: $28</h3>
       </div>
       <hr>
       <div style="font-size:18px">
           <h2>References</h2>
-          <a href="https://picamera.readthedocs.io/">PiCamera Document</a><br>
-          <a href="http://www.micropik.com/PDF/SG90Servo.pdf">Tower Pro Servo Datasheet</a><br>
-          <a href="http://getbootstrap.com/">Bootstrap</a><br>
-          <a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a><br>
-          <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
+          <a href="https://docs.ultralytics.com/integrations/ncnn/#usage">YOLO11 Object Detection References</a><br>
+          Document</a><br>
 
       </div>
 
     <hr>
-
-      <div class="row">
-              <h2>Code Appendix</h2>
-              <pre><code>
-// Hello World.c
-int main(){
-  printf("Hello World.\n");
-}
-              </code></pre>
-      </div>
 
     </div><!-- /.container -->
 
@@ -485,7 +488,7 @@ int main(){
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></cript>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
   </body>
