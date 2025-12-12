@@ -7,9 +7,8 @@ from flask import Flask, render_template, request, jsonify
 from ultralytics import YOLO
 import subprocess
 
-# --- GLOBAL SETTINGS ---
-MODEL_PATH = "yolo11n_ncnn_model"  # <--- CHANGE THIS to your model file
-CAMERA_INDEX = 0        # 0 for USB, 'picamera' for PiCamera (requires extra setup)
+MODEL_PATH = "yolo11n_ncnn_model" 
+CAMERA_INDEX = 0       
 
 app = Flask(__name__)
 
@@ -17,7 +16,7 @@ app = Flask(__name__)
 #         HARDWARE SETUP
 # ====================================
 
-# Motor Pins (From your uploaded file)
+# Motor Pins 
 LEFT_INA = 5
 LEFT_INB = 6
 LEFT_PWM = 26
@@ -52,7 +51,7 @@ GPIO.output(TRIG_PIN, False)
 GPIO.output(BOT_TRIG_PIN, False)
 
 # Global State Variables
-current_mode = "JOYSTICK"  # Starts in Joystick mode
+current_mode = "JOYSTICK"  
 distance_main = 400
 distance_bot = 400
 running = True
@@ -77,8 +76,7 @@ def set_motor(pwm, ina, inb, speed):
         GPIO.output(inb, GPIO.LOW)
 
 def move_robot(left_speed, right_speed):
-    # Apply your specific calibration (from uploaded file)
-    # Right motor was slightly stronger in your code: right_speed * (1-12/75)
+    # callibration to make motors go straight
     calibrated_right = right_speed * (1 - 12/75)
     
     set_motor(left_pwm, LEFT_INA, LEFT_INB, left_speed)
@@ -87,10 +85,6 @@ def move_robot(left_speed, right_speed):
 def stop_robot():
     set_motor(left_pwm, LEFT_INA, LEFT_INB, 0)
     set_motor(right_pwm, RIGHT_INA, RIGHT_INB, 0)
-
-# def speak(text):
-#     # Non-blocking speech
-#     subprocess.Popen(["espeak", text])
 
 speech_process = None  # To track the running espeak process
 
@@ -112,30 +106,15 @@ def speak(text):
 # ====================================
 
 # Define the GPIO pin connected to the sound sensor's D0 pin
-SOUND_SENSOR_PIN = 4 # Using BCM numbering for GPIO 4
+SOUND_SENSOR_PIN = 4 
 spinMode = False
 interuptEnable = False
 
-# --- Setup ---
-GPIO.setmode(GPIO.BCM) 
-# Set the pin as an INPUT with a PULL-DOWN resistor, 
-# as you requested and based on the assumption the sensor is active-HIGH.
 GPIO.setup(SOUND_SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
 
-print("Sound Sensor Test Running (Interrupt Mode)")
-print("Waiting for sound on GPIO 4...")
-print("(Press Ctrl+C to exit)")
-
-# --- Callback Function ---
-# This function runs automatically whenever the event is detected
 def sound_detected_callback(channel):
-    """
-    Callback function executed when a rising edge is detected on the GPIO pin.
-    """
-    # Note: We can add a debounce here to prevent multiple triggers from a single clap.
+
     global interuptEnable
-    print('i heard you')
-    print(interuptEnable)
     if interuptEnable:
         current_time = time.strftime("%H:%M:%S")
         print(f"\n--- {current_time} --- ?? Sound Detected!")
@@ -147,16 +126,7 @@ def sound_detected_callback(channel):
         stop_robot()
         time.sleep(0.5)
         interuptEnable = False
-    
-    # You could add your action code here (e.g., logging, triggering an LED)
-
-
-# --- Event Detection Setup ---
-
-# 1. Add the event detection to the pin.
-#    - GPIO.RISING: Trigger on the LOW-to-HIGH transition (sound detected). 
-#    - bouncetime=200: Ignores subsequent triggers for 200 milliseconds,
-#                      which prevents electrical noise from causing multiple detections.
+ 
 GPIO.add_event_detect(
     SOUND_SENSOR_PIN, 
     GPIO.RISING, 
@@ -171,6 +141,7 @@ GPIO.add_event_detect(
 
 timeoutLED = 5
 ledStart = -10
+LED_process= None
 
 def change_lights(mode='off', color="255,255,255"):
     """
@@ -179,18 +150,23 @@ def change_lights(mode='off', color="255,255,255"):
     color: string 'R,G,B'
     """
     try:
-        # We use 'sudo' to elevate permissions just for this script
-        # We use '-c' (clear) only if we want lights off at the end, 
-        # otherwise we leave it out so the lights stay on the last color.
         
         cmd = ["sudo", "-E", "python3", "light_test.py", "--mode", mode, "--color", color]
         
         # subprocess.Popen allows the script to run without blocking your app completely,
         # or use subprocess.run() if you want to wait for the animation to finish.
-        global ledStart
-        if time.time() - ledStart > 5:
-            subprocess.run(cmd)
-            ledStart = time.time()
+        
+        global LED_process
+        # If a process is already running and hasn't finished, SKIP this new speak command
+        if LED_process is not None and LED_process.poll() is None:
+            return 
+    
+        # Otherwise, start a new one
+        LED_process = subprocess.Popen(cmd)
+        #global ledStart
+        #if time.time() - ledStart > 5:
+        #    subprocess.run(cmd)
+        #    ledStart = time.time()
         
     except Exception as e:
         print(f"Error controlling lights: {e}")
@@ -275,6 +251,7 @@ def autonomous_loop():
             speak("ahhhh too close")
             stop_robot()
             move_robot(-60, -60)
+            change_lights('wipe', '255,0,0')
             time.sleep(1.0)
             stop_robot()
             continue
@@ -321,12 +298,11 @@ def autonomous_loop():
                 # --------------------------------------------
                 bboxHeight = ymax - ymin
                 
-                # exponential smoothing
+                # exponential smoothing for low pass filter of height and width change
                 smoothed_height = alpha_height * bboxHeight + (1 - alpha_height) * smoothed_height
                 smoothed_width = alpha_height * (xmax - xmin) + (1 - alpha_height) * smoothed_width
                 
                 # count consecutive close frames
-                # if smoothed_height > HEIGHT_STOP_RATIO * frame_height:
                 HEIGHT_STOP_RATIO = 0.8
                 if smoothed_height > HEIGHT_STOP_RATIO * frame_height and smoothed_width > 0.6 * frame.shape[1]:
                     close_frames += 1
@@ -364,8 +340,6 @@ def autonomous_loop():
                         speed_x=0
                     speed_x = -1 * max(min(speed_x, maxTurnDuty), -maxTurnDuty)  # Clamp speed
                     
-                    # Use HEIGHT to control forward speed
-                    # dist_ratio = smoothed_height / frame_height     # 0.0 = far, 1.0 = very close
                     # Use area to control forward speed
                     bbox_area = (xmax - xmin) * (ymax - ymin)
                     frame_area = frame.shape[0] * frame.shape[1]
@@ -385,26 +359,13 @@ def autonomous_loop():
                     left_speed = max(min(left_speed, maxDuty), -maxDuty)
                     right_speed = max(min(right_speed, maxDuty), -maxDuty)
                     
-                    # Execute movement based on YOLO
                     move_robot(left_speed, right_speed)
                     print(f'Tracking {class_name}. Speeds L:{left_speed:.1f}, R:{right_speed:.1f}')
                     speak('wait up')
                     change_lights('theater', '0,255,0')
-                    movement_executed = True # Mark that we followed a person
+                    movement_executed = True 
                 
                 break # Only track the first person found
-
-                # # Forward Logic (Simple Area based)
-                # height = ymax - ymin
-                # if height > 400: # Too close
-                #     stop_robot()
-                #     speak("got it")
-                #     time.sleep(2)
-                # else:
-                #     forward_speed = 50
-                #     move_robot(forward_speed + turn_speed, forward_speed - turn_speed)
-                
-                break # Only track one person
 
         if not person_found:
             stop_robot()
@@ -415,44 +376,31 @@ def autonomous_loop():
 
             prevCount += 1
             
-            # If no object has been detected for 10 frames, stop and search
-
-            # if spinMode and prevCount >= 5:
-            #     spinMode = False
-            #     interuptEnable = False
-            #     prevCount = 0
-            #     print('No object detected for a while, spinning to search.')
-            #     speak('where are you trash')
-
-            #     # Spin right slowly
-            #     move_robot(50, -50) 
-            #     time.sleep(0.4) # Spin for half a second
-            #     stop_robot()
-            #     time.sleep(0.5)
-            #     prevCount = 0
-            
-            if prevCount >= 5:
+            # only start to look for claps after 5 frames of not seeing anyone
+            # or else motors will trigger sounds
+            if prevCount >= 5 and not interuptEnable:
                 stop_robot()
                 time.sleep(0.2)
                 interuptEnable = True
+                change_lights('wipe', '255,255,0')
                 prevCount = 0
                 print('enabling interrupts')
 
-        # Calculate and draw framerate (if using video, USB, or Picamera source)
+
+        # draw to screen
         cv2.putText(frame, f'FPS: {avg_frame_rate:0.2f}', (10,20), cv2.FONT_HERSHEY_SIMPLEX, .7, (0,255,255), 2) # Draw framerate
-        
-        # Display detection results
         cv2.putText(frame, f'Number of objects: {object_count}', (10,40), cv2.FONT_HERSHEY_SIMPLEX, .7, (0,255,255), 2) # Draw total number of detected objects
         # Display sensor data
         cv2.putText(frame, f'Dist: {distance_main:.1f}cm', (10,60), cv2.FONT_HERSHEY_SIMPLEX, .7, (0,255,255), 2)
         cv2.putText(frame, f'Bot Dist: {distance_bot:.1f}cm', (10,80), cv2.FONT_HERSHEY_SIMPLEX, .7, (0,255,255), 2)
 
 
+        # display to monitor or ssh screen
         if displayScreen == 'monitor':
             cv2.imshow('YOLO', frame)
-            # CRITICAL: waitKey is needed for OpenCV to process events and free memory
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+        # display to pitft
         elif fb_file:
             resized = cv2.resize(frame, (320, 240), interpolation=cv2.INTER_NEAREST)
             frame16 = cv2.cvtColor(resized, cv2.COLOR_BGRA2BGR565)
@@ -536,7 +484,7 @@ if __name__ == '__main__':
     t_ultra.daemon = True
     t_ultra.start()
 
-    # Start Autonomous AI in Background
+    # Start auto mode in Background
     t_auto = threading.Thread(target=autonomous_loop)
     t_auto.daemon = True
     t_auto.start()
