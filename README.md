@@ -17,6 +17,7 @@ File Structure:
 
 
     **app_and_motor**
+    - used in video
 
     -----> static
            ------> nipplejs.min.js
