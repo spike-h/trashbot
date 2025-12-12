@@ -97,7 +97,7 @@
 				const force = Math.min(data.force, 2.0);
 				const angle = data.angle.radian;
 
-				// Convert polar to Cartesian
+				// Convert angle to x and y
 				const x = Math.cos(angle) * (force / 2.0);
 				const y = Math.sin(angle) * (force / 2.0);
 
@@ -117,7 +117,7 @@
 				});
 			});
 
-			// --- MODE TOGGLE ---
+			// --- TOGGLE ---
 			function toggleMode() {
 				const btn = document.getElementById("modeBtn");
 				const joyZone = document.getElementById("zone_joystick");
@@ -141,7 +141,7 @@
 					autoInd.style.display = "none";
 				}
 
-				// Notify Server
+				// notify flask Server
 				fetch("/toggle_mode", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
