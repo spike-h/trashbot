@@ -130,28 +130,77 @@
               Binny contains a wide variety of electrical components, each with their own functionality. The breadboard diagram 
 
               <h3>Software</h3>
-              <li>Computer Vision: (overclocking and overvoltage, shrinking model, detection scheme, camera)</li>
-              <li>motor control</li>
-              <li>ultrasonic sensing</li>
-              <li>clap detection</li>
+              <li> FLOW CHART OF CONTROL SCHEME === joystick mode ==== auto +> wait up, got it, backing up, where are you trash, just stopped</li>
+              <li>Computer Vision: (overclocking and overvoltage, shrinking model, detection scheme, camera) -- CHECK</li>
+              <li>PiTFT display - CHECK</li>
+              <li>motor control - CHECK </li>
+              <li>ultrasonic sensing - CHECK</li>
+              <li>clap detection - CHECK</li>
               <li>LEDs</li>
               <li>website and hotspot</li>
               <li>speaker voice</li>
-              <li>PiTFT display</li>
+              
 
               <h4>Computer Vision</h4>
               
+              <h5> YOLO Model Optimization</h5>
               <p style="text-align: left;padding: 0px 30px;">
               To enable Binny to follow humans around, we implemented a computer vision algorithm using the YOLO (You Only Look Once) object detection model. 
               We chose YOLO for its speed and accuracy, 
-              making it suitable for real-time applications on the Raspberry Pi, and because initially, we were aiming to detect a variety of objects as they flew in the air in real-time, however, this. We used a pre-trained YOLOv11n model. The model was optimized to run efficiently on the 
-              Raspberry Pi by reducing its size and complexity, allowing Binny to process video frames at a reasonable frame rate. The camera captures video frames, which are then processed by the 
+              making it suitable for real-time applications on the Raspberry Pi, and because initially, we were aiming to detect a variety of objects as they flew in the air in real-time, however, despite our best efforts, the Raspberry Pi's CPU is not fast enough to do so.
+              
+              We used a pre-trained YOLOv11n_ncnn model. The model was optimized to run efficiently on the 
+              Raspberry Pi by reducing its size and complexity, allowing Binny to process video frames at a reasonable frame rate. The n in YOLOv11n stands for nano, being the smallest version of the latest YOLO fleet. By using the YOLOv11n model, we can only achieve ~1.5FPS, which is too slow for any of our applications. To further improve it, we overclocked our Pi from 1.5GHz to 2GHz and raising the voltage of the CPU from 0.8V to 0.95V to speed up the processing. This raised the FPS slightly to 2, but was still insufficient. We then also exported the model to NCNN, which is a neural network framework that is optimized for embedded devices such as a Raspberry Pi (https://docs.ultralytics.com/integrations/ncnn/#usage). Using the framework directly didn't lead to much of an increase in speed, but while exporting the model, we can also change the model's image size from 640x640px to 320x320px, and to use floating point 16 instead of 32 to scarifice precision and image resolution for higher speeds. This raised the speed to 7FPS. We use the Ultralytics Python library as a wrapper to import, export, and call the Pytorch YOLO model. 
+              </p>
+
+              <h5>Human Detection and Tracking</h5>
+              <p style="text-align: left;padding: 0px 30px;">
+              We use OpenCV to capture video frames via the USB camera, which are then processed by the 
               YOLO model to detect humans. The model outputs bounding boxes around detected humans along with their confidence scores. We extract 
               the center coordinates of the bounding boxes 
               to determine the position of the person relative to Binny. These coordinates are then used to calculate the direction and speed at which 
-              Binny should move to follow the detected person.
+              Binny should move to follow the detected person. We had a major problem with the model detecting irrelevant objects such as chairs and backpacks, which would cause Binny to get stuck or move erratically. To solve this, we set a confidence score threshold of 0.7 and only consider detections with a confidence score above this threshold as valid human detections. This significantly improved the reliability of Binny's tracking behavior.
+              Additionally, we implemented a simple proportional controller to adjust Binny's movement based on the horizontal offset of the detected person from the center of the camera frame. As a person approaches a the middle area of the camera, about 40 pixels from the middle, the motors will stop moving left/right, but as one deviates from this area, the motors will adjust their speed accordingly. This allows Binny to smoothly follow the person. The exact motor speeds and thresholds were determined through extensive testing and tuning. We opted to settle on a very low turning speed, allowing the robot to travel straight more easily without veering off course, but at the cost of slower turning response, and not being able to follow sharp turns when you are close.
+              The forwards motion of Binny is determined by the size of the bounding box, which correlates to the distance of the person from Binny. As the person gets closer, the bounding box size increases, and Binny slows down to avoid collisions. If the bounding box size exceeds a certain threshold, Binny will stop moving forward altogether. As a safety measure, if no humans are detected for more than 2 seconds, Binny will stop moving to prevent wandering off. 
               </p>
-              
+
+              <h5>PiTFT display</h5>
+              <p style="text-align: left;padding: 0px 30px;">
+              The PiTFT display is used to provide a real-time visual interface for Binny. It displays the video feed from the USB camera along with the bounding boxes drawn around detected humans. This allows users to see what Binny is "seeing" and how it is interpreting its surroundings. The display also shows additional information such as the current FPS, distance readings from the ultrasonic sensors, and how many objects it detects in a scene. 
+              The PiTFT is interfaced directly by writing to the framebuffer using OpenCV, allowing for efficient rendering of graphics and text. This direct framebuffer access was actually a major source of lag in our system, as writing to the PiTFT's framebuffer is quite slow. To mitigate this, we optimized our drawing routines to only open the frame buffer once as opposed to opening and closing it every frame. This significantly improved the overall performance of the display, and the overall program since this issue was causing the entire system to lag.
+              </p>
+
+              <h4>Motor Control</h4>
+              <p style="text-align: left;padding: 0px 30px;">
+              Motor control is achieved using the pigpio library to interface with the GPIO pins of the Raspberry Pi. The library allows for precise control of PWM signals to drive the motor driver, which in turn controls the speed and direction of the DC motors. We set up two motors for differential drive, allowing Binny to move forward, backward, and turn by varying the speed of each motor independently. The motor speeds are adjusted based on the output from the computer vision algorithm, allowing Binny to follow detected humans smoothly. The interface for these motors are similar to the one used in Lab 3 of this class, with functions to alter the PWM duty cycle and direction of each motor as we want to change speed and direction.
+              </p>
+
+              <h4>Ultrasonic Sensors</h4>
+              <p style="text-align: left;padding: 0px 30px;">
+              Ultrasonic sensors are used for obstacle detection and avoidance. We use two ultrasonic sensors mounted on the front of Binny to measure distances to nearby objects. The sensors work by sending out a high-frequency sound pulse and measuring the time it takes for the echo to return. This time is then converted into a distance measurement. The pigpio library is used to generate the trigger pulse and measure the echo pulse duration using GPIO pins. If an object is detected within a certain distance of 10cm, Binny will stop moving forward to avoid collisions. The threshold of 10cm was decided after extensive tests and hard hits to the LCD screen. This safety feature ensures that Binny can navigate its environment without running into obstacles, and also serves as a way for someone to signal Binny to back up if it gets too close.
+              We have the ultrasonic sensors constantly measuring distances in a separate thread, updating global distance variables that the main control loop can access. This allows for real-time obstacle detection without blocking the main program flow.
+            </p>
+
+              <h4>Clap Detection</h4>
+              <p style="text-align: left;padding: 0px 30px;">
+              Clap detection is implemented using a sound sensor connected to the Raspberry Pi. The sensor outputs an digital signal when a loud sound, such as a clap, is detected. We use the pigpio library to monitor the GPIO pin connected to the sound sensor for rising edges, indicating a clap event. When a clap is detected, Binny's main loop will interupt and it will spin around in place to look for a person to follow. This feature adds an interactive element to Binny, allowing users to easily get its attention when it is idle. The spin duration and speed were determined through testing to ensure Binny can effectively reorient itself without overshooting. We opted for a smaller spin angle of about 10 degrees per clap to prevent Binny from getting disoriented and losing track of the person it was following, but since we are controlling the motors directly, the angles change depending on what floor Binny is on.
+              We also had to tune the sensitivity of the sound sensor to avoid false positives from ambient noise. This was done by adjusting the potentiometer on the sound sensor module.
+              </p>
+
+              <h4>LEDs</h4>
+              <p style="text-align: left;padding: 0px 30px;">
+              The LEDs are used to provide visual feedback and enhance the user experience. We use a NeoPixel ring connected to the Raspberry Pi via a dedicated GPIO pin. The Adafruit NeoPixel library is used to control the LEDs, allowing us to set colors and animations. At startup, Binny performs a colorful LED animation to indicate that it is powering on. During operation, the LEDs can change colors based on Binny's state, such as: wiping a red across the strip if it is within range of a person to signify stopping, flashing a green light when it hears a clap to turn, flashing a blue light when it chases someone, wiping white across the strip when we transition from joystick to autonomous mode, and having a rainbow gradient fade on the strip when we are controlling the robot using a joystick. 
+              The LED effects are managed in a separate python process from the main app since the NeoPixel library needs to be run as root, which the rest of the program was not configured to do (we ran into permission issues when running the ultrasonic code as root). Communication between the main app and the LED process is done via a simple command line protocol using the subprocess library. We can run a command such as "sudo -E python light_test.py --mode wipe --color 0,255,0" from our main Python program to spawn a process that is run as root to handle the LEDs. This allows us to change LED effects in real-time based on Binny's state without blocking the main program flow.
+              A problem we encountered with the LEDs is that if the LED process is not properly terminated, the pins controlling the LEDs can get stuck in their last state, and conflict with any subsequent calls, causing the whole system to lag and the LEDs to flash erratically or just not change color. To solve this, we implemented a cleanup routine that is called when the main program exits, which sends a command to the LED process to properly de-initialize the pin used to control the LEDs. Additionally, we made sure to prevent multiple LED processes from running simultaneously by checking for existing processes before spawning a new one, and by limiting the time between LED processes to at least 5 seconds.
+              The large gap between LED commands is to prevent multiple LED processes from running at once, which would cause the system to lag and the LEDs to behave erratically.
+              Additionally, to run the LED process at startup with a set animation, we have a bash script to run a separate program that handles the LED startup animation, that then runs the main Binny program after the animation is complete.
+              A nother large problem we had with these LEDs is that they draw a relatively a lot of voltage, which when powered directly from the Pi led to issues with controlling the camera, screen, and motors all at once which already is taxing. To solve this, we powered the LEDs from a separate 5V power supply via the motor driver to offload the power draw from the Pi.
+
+              <h4>Website and Hotspot</h4>
+              <p style="text-align: left;padding: 0px 30px;">
+              The website serves as a user interface for controlling Binny. It is hosted on the Raspberry Pi using the Flask web framework. The website allows users to toggle between manual joystick control and autonomous mode. In joystick mode, users can control Binny's movement using an on-screen joystick implemented with the nipplejs library. In autonomous mode, Binny uses its computer vision and obstacle avoidance algorithms to follow humans automatically. The website has a button to switch modes, which sends a request to the Flask server to update Binny's operating mode. The server then communicates this change to the main control loop of Binny, allowing it to switch between manual and autonomous operation.
+              Additionally, The Raspberry Pi is configured to create a WiFi hotspot using networkmanager, allowing users to connect directly to Binny's network. This enables easy access to the website without needing an external WiFi network. The hotspot configuration includes setting up a static IP address for the Pi so users can access the website at a known address (10.42.0.1:5000).
+              </p>
 
             
               <!-- <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p> -->
@@ -161,6 +210,15 @@
 
       <div style="text-align:center;">
               <h2>Testing</h2>
+              motor speed differences (not going straight),
+              motor wiring issues
+              motor driver issues
+              improving how to turn towards person
+              improving confidence score threshold
+              Pitft and espeak process laggings
+              led not cleaning up when finished
+
+
               <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
       </div>
 
