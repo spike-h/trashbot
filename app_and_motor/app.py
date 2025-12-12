@@ -378,10 +378,11 @@ def autonomous_loop():
             
             # only start to look for claps after 5 frames of not seeing anyone
             # or else motors will trigger sounds
-            if prevCount >= 5:
+            if prevCount >= 5 and not interuptEnable:
                 stop_robot()
                 time.sleep(0.2)
                 interuptEnable = True
+                change_lights('wipe', '255,255,0')
                 prevCount = 0
                 print('enabling interrupts')
 
